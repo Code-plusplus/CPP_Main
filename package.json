@@ -1,0 +1,29 @@
+{
+  "name": "cpp_main",
+  "version": "1.0.0",
+  "description": "Codeplusplus main webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Code-plusplus/CPP_Main.git"
+  },
+  "author": "anikraj.me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Code-plusplus/CPP_Main/issues"
+  },
+  "homepage": "https://github.com/Code-plusplus/CPP_Main#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "csurf": "^1.8.3",
+    "express": "^4.13.4",
+    "express-stormpath": "^2.4.0",
+    "forms": "^1.1.4",
+    "jade": "^1.11.0",
+    "xtend": "^4.0.1"
+  }
+}
