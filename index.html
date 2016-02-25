@@ -21,7 +21,7 @@
   console.log('Email: ' + profile.getEmail());
   fetch('/adduser', {
     method: 'post',
-    body: {'email' : profile.getEmail()}
+    body: {'email' : profile.getEmail(),'name':profile.getName(),'image':profile.getImageUrl()}
   });
 }
 

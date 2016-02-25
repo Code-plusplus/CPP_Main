@@ -5,9 +5,6 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-router.get('/editor', function(req, res, next) {
-  res.render('sandbox', { padnumber: 'test' });
-});
 
 /* GET home page. */
 router.get('/hello', function(req, res, next) {
@@ -30,19 +27,29 @@ router.get('/adduser', function(req, res) {
     });
 });
 
+router.get('/listuser', function(req, res) {
+    var db = req.db;
+    var collection = db.get('userlist');
+    collection.find({},function (err,argument) {
+            var iffy = JSON.stringify(argument);
+            console.log(iffy);
+            res.send(iffy);
+    });
+});
+
 router.post('/adduser', function(req, res) {
     var db = req.db;
     var collection = db.get('userlist');
 
 
-	console.log("stuff : " + req.body.email);
+	//console.log("stuff : " + req.body.email);
 
 
     collection.find({email: req.body.email},function (err,argument) {
     		// body...
 
     		var iffy = JSON.stringify(argument);
-    		console.log(iffy.length);
+    		//console.log(iffy.length);
 		if (iffy.length == 2)
 		{
 		 	    collection.insert({"email":req.body.email}, function(err, result){
