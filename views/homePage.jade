@@ -1,0 +1,30 @@
+doctype html
+html
+  head
+    title Sign in
+    | &#x9;
+    meta(name='google-signin-client_id', content='793937944852-0q0g93c2pflqpu8bs9u24k1lcq0odsqk.apps.googleusercontent.com')
+  body
+    .g-signin2(data-onsuccess='onSignIn')
+    a(href='#', onclick='signOut();') Sign out
+  script.
+    function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail());
+    var emid = profile.getEmail();
+    console.log('my email id is' + emid);
+    fetch('/adduser', {
+    method: 'post',
+    headers: new Headers({"Content-Type" : "application/json;charset=UTF-8"}),
+    body: JSON.stringify({email : emid})
+    });    }
+    function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+    console.log('User signed out.');
+    });
+    }
+  script(src='https://apis.google.com/js/platform.js', async='', defer='')

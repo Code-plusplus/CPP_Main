@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+<head>
+<title>SandBox</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+               <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+</head>
+ <style type="text/css" media="screen">
+    #editor { 
+        position: relative;
+        height: 200px;
+          }
+</style>
+<style >
+ 
+ body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+
+      h2.thin {
+          font-weight: 200;
+      }
+
+      .toastbottom {
+        bottom: 45px; right: 24px;
+      }
+      .hidden{
+        visibility: hidden;
+      }
+      a.thin_2{
+         font-weight: 300;
+      }
+    
+         #userlist {
+      position: absolute; left: 0; top: 0; bottom: 0; height: auto;
+      width: 175px;
+    }
+         
+</style>
+
+<body>
+    
+<header>
+  <div class="navbar-fixed">
+ <nav class=" teal">
+      <div class="nav-wrapper">
+
+      <a href="#!" id="titlee" class="truncate brand-logo thin_2"><i class="mdi-editor-insert-drive-file left"></i>New File</a>
+    </div>
+  </nav>
+</div>
+
+
+
+</header>
+
+<main>
+    <div class="container">
+       <h2 class="thin" >Sandbox editor</h2>
+         <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div id="text" class="input-field col s10">
+          <div id="editor"></div>
+        </div>
+        <div id="text" class="input-field col s2">
+          <div id="userlist"></div>
+        </div>
+      </div> 
+    </form>
+       
+      <!--  <a onClick="doSomething()" id="compilebtn" class="waves-effect waves-light btn">Compile</a> -->
+    
+
+  </div>
+  <h2 class="thin">Discussion:</h2>
+  <h5 id="results"></h5>
+      </div>   <!-- Compiled and minified CSS -->
+ 
+ </main>
+        
+    <!-- Modal Structure -->
+       <div id="startmodal" class="modal">
+    <div class="modal-content">
+      <h4>Save</h4><p>Files with same names will be overwritten.<br></p>
+      <div class="input-field col s6">
+          <input style=" font-size:30px" id="filename" type="text" class="validate">
+          <label for="filename">File Name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a href="#" onClick="savefile()" class=" modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+    </div>
+  </div>
+
+
+
+
+
+ <footer class="page-footer transparent">
+   <div class="footer-copyright">
+            <div class="container">
+            <a class="grey-text right" >anikraj1994@gmail.com</a>
+            </div>
+          </div>
+        </footer>
+
+<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+<!-- ACE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+<!-- Firepad -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.3.0/firepad.css" />
+<script src="https://cdn.firebase.com/libs/firepad/1.3.0/firepad.min.js"></script>
+<script src="firepad-userlist.js"></script>
+  <link rel="stylesheet" href="firepad-userlist.css" />
+
+<script>
+function comment(){ 
+  //$('#commentmodal').openModal();
+   Materialize.toast('Comment added', 2000);
+}
+
+
+    var firepadRef = new Firebase('cppeditor.firebaseio.com/firepads/test');
+
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/dreamweaver");
+    editor.getSession().setMode("ace/mode/c_cpp");
+    editor.getSession().setTabSize(4);
+   editor.setOptions({
+    maxLines: Infinity
+});
+   editor.$blockScrolling = Infinity
+   editor.getSession().setUseWrapMode(false)
+    editor.setHighlightActiveLine(false);
+    document.getElementById('editor').style.fontSize='18px';
+    editor.setShowPrintMargin(false);
+    editor.commands.addCommand({
+    name: 'commenti',
+    bindKey: {win: 'Ctrl-C',  mac: 'Command-C'},
+    exec: function(editor) {
+        comment();
+    },
+    readOnly: true // false if this command should not apply in readOnly mode
+});
+  
+  var userIdd = Math.floor(Math.random() * 9999999999).toString();
+   var firepad = Firepad.fromACE(firepadRef, editor,{userId: userIdd});
+  
+   var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
+          document.getElementById('userlist'), userIdd,"asdasd");
+
+     firepad.on('ready', function() {
+        if (firepad.isHistoryEmpty()) {
+          firepad.setText('Check out the user list to the left!');
+        }
+      });
+
+</script>
+    </body>
+    <script type="text/javascript">
+
+$( document ).ready(function(){
+
+
+
+    
+
+});
+
+
+</script>
+</html>
