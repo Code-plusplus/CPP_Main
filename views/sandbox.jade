@@ -4,6 +4,7 @@ html
   meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
   meta(http-equiv='X-UA-Compatible', content='IE=edge')
   meta(name='msapplication-tap-highlight', content='no')
+  meta(name='google-signin-client_id', content='793937944852-0q0g93c2pflqpu8bs9u24k1lcq0odsqk.apps.googleusercontent.com')
   head
     title SandBox
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css')
@@ -47,6 +48,18 @@ html
             a#titlee.truncate.brand-logo.thin_2(href='#!')
               i.mdi-editor-insert-drive-file.left
               | #{padname}
+            a.button-collapse(href='#', data-activates='mobile-demo')
+              i.mdi-navigation-menu
+            ul.right.hide-on-med-and-down
+              li
+                a() #{useremail}
+              li
+                a(onclick='signOut()',href='#') Sign out
+            ul#mobile-demo.side-nav
+              li
+                a() #{useremail}
+              li
+                a(onclick='signOut()',href='#') Sign out
     main
       .container
         h2.thin Sandbox editor
@@ -57,6 +70,7 @@ html
                 #editor
               #text.input-field.col.s2
                 #userlist
+          // <a onClick="doSomething()" id="compilebtn" class="waves-effect waves-light btn">Compile</a>
         h2.thin Discussion:
         h5#results
       // Compiled and minified CSS
@@ -115,12 +129,32 @@ html
       var userIdd = Math.floor(Math.random() * 9999999999).toString();
       var firepad = Firepad.fromACE(firepadRef, editor,{userId: userIdd});
       var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
-      document.getElementById('userlist'), userIdd,"#{username}");
+      document.getElementById('userlist'), userIdd,'#{username}');
       firepad.on('ready', function() {
       if (firepad.isHistoryEmpty()) {
       firepad.setText('Check out the user list to the left!');
       }
       });
   script(type='text/javascript').
-    $( document ).ready(function(){
+    //var auth23 = gapi.auth2.getAuthInstance();
+    //if(!auth23.isSignedIn.get())window.location.href = '/';
+    function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+    console.log('User signed out.');
+    window.location.href = '/';
     });
+    }
+    $( document ).ready(function(){
+    $(".button-collapse").sideNav();
+    console.log('#{username}');
+    console.log('#{userimage}');
+    });
+    function onLoad() {
+    gapi.load('auth2', function() {
+    gapi.auth2.init();
+    console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
+    });
+    }
+  script(src='https://apis.google.com/js/platform.js?onload=onLoad', async='', defer='')
+  

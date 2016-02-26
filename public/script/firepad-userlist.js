@@ -8,7 +8,6 @@ var FirepadUserList = (function() {
     this.userId_ = userId;
     this.place_ = place;
     this.firebaseCallbacks_ = [];
-
     var self = this;
     this.hasName_ = !!displayName;
     this.displayName_ = displayName || 'Guest ' + Math.floor(Math.random() * 1000);

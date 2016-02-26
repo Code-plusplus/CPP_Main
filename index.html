@@ -8,11 +8,16 @@
 
 <body>
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
-<a href="#" onclick="signOut();">Sign out</a>
+<a href="#" onclick="signOut();">Sign out</a><br>
+<a href="#" id="snipbutton" onclick="snip();">Make Snip</a>
+<br>
+<a href="#" id="askbutton" onclick="ask();">Ask doubt</a>
+<br>
 </body>
 
 
 <script>
+  hideall();
 	function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -21,16 +26,28 @@
   console.log('Email: ' + profile.getEmail());
   fetch('/adduser', {
     method: 'post',
-    body: {'email' : profile.getEmail(),'name':profile.getName(),'image':profile.getImageUrl()}
+    body: {'email' : profile.getEmail(),'namee':profile.getName(),'image':profile.getImageUrl()}
   });
+showall();
+  
+
 }
 
 
 
+function showall(){
+  document.getElementById('snipbutton').style.visibility = "visible";
+  document.getElementById('askbutton').style.visibility = "visible";
+}
 
+function hideall(){
+  document.getElementById('snipbutton').style.visibility = "hidden";
+  document.getElementById('askbutton').style.visibility = "hidden";
+}
 
 
   function signOut() {
+    hideall();
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');

@@ -2,26 +2,39 @@ doctype html
 html
   head
     title Sign in
-    | &#x9;
     meta(name='google-signin-client_id', content='793937944852-0q0g93c2pflqpu8bs9u24k1lcq0odsqk.apps.googleusercontent.com')
   body
     .g-signin2(data-onsuccess='onSignIn')
     a(href='#', onclick='signOut();') Sign out
+    br
+    a#snipbutton(href='#', onclick='snip();') Make Snip
+    br
+    a#askbutton(href='#', onclick='ask();') Ask doubt
+    br
   script.
+    hideall();
     function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail());
-    var emid = profile.getEmail();
-    console.log('my email id is' + emid);
     fetch('/adduser', {
     method: 'post',
-    headers: new Headers({"Content-Type" : "application/json;charset=UTF-8"}),
-    body: JSON.stringify({email : emid})
-    });    }
+    body: {'email' : profile.getEmail(),'namee':profile.getName(),'image':profile.getImageUrl()}
+    });
+    showall();
+    }
+    function showall(){
+    document.getElementById('snipbutton').style.visibility = "visible";
+    document.getElementById('askbutton').style.visibility = "visible";
+    }
+    function hideall(){
+    document.getElementById('snipbutton').style.visibility = "hidden";
+    document.getElementById('askbutton').style.visibility = "hidden";
+    }
     function signOut() {
+    hideall();
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
     console.log('User signed out.');

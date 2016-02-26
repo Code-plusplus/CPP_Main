@@ -6,15 +6,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 
-
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/cpp');
-
+var connection_string = '127.0.0.1:27017/cpp';
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+var db =  monk(connection_string);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sandbox = require('./routes/sandbox');
+
 var app = express();
 
 // view engine setup
@@ -28,8 +36,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-
 // Make our db accessible to our router
 app.use(function(req,res,next){
     req.db = db;
@@ -39,9 +45,9 @@ app.use(function(req,res,next){
 
 
 
-app.use('/', routes);
+//app.use('/', routes);
 app.use('/users', users);
-app.use('/sandbox', sandbox);
+app.use('/', sandbox);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -71,6 +77,14 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
+});
+
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+app.listen(port, ipaddress, function() {
+//app.listen(3000, function() {
+    // Do your stuff
+     console.log('cpp app listening');
 });
 
 

@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title Sign in
+    meta(name='google-signin-client_id', content='793937944852-0q0g93c2pflqpu8bs9u24k1lcq0odsqk.apps.googleusercontent.com')
+  body
+    .g-signin2(data-onsuccess='onSignIn')
+  script.
+    function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    location.href = '/public?namee='+encodeURI(profile.getName())+"&email="+encodeURI(profile.getEmail());
+    }
+  script(src='https://apis.google.com/js/platform.js', async='', defer='')
